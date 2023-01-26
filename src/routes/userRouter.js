@@ -3,6 +3,6 @@ import { getGames } from "../controllers/userController.js";
 
 const userRouter = Router();
 
-userRouter.get("/games/:type", getGames);
+userRouter.get("/games", getGames);
 
 export { userRouter };
