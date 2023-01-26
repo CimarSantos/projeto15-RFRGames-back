@@ -7,6 +7,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use(userRouter);
+server.use(authRouter); 
 
 server.listen(process.env.PORT, () => {
   console.log(`Server is listening on port 5000`);
