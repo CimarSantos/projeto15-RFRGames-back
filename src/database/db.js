@@ -10,6 +10,6 @@ try {
   console.log(error.message);
 }
 
-const db = mongoClient.db("rfrgames");
+const db = mongoClient.db("RFRGames");
 
 export { db };
