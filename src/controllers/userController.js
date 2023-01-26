@@ -4,9 +4,9 @@ import { COLLECTION } from "../enums/collections.js";
 import { STATUS_CODE } from "../enums/statusCode.js";
 
 async function getGames(req, res) {
-  const { game } = req.body;
+  const { type } = req.params;
   try {
-    const listGames = await db.collection(COLLECTION.GAMES).find({ game });
+    const listGames = await db.collection(COLLECTION.GAMES).find({ type });
     return res.status(STATUS_CODE.OK).send(listGames);
   } catch (error) {
     res
