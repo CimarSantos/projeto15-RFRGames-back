@@ -6,7 +6,10 @@ import { STATUS_CODE } from "../enums/statusCode.js";
 async function getGames(req, res) {
   const { type } = req.params;
   try {
-    const listGames = await db.collection(COLLECTION.GAMES).find({ type });
+    const listGames = await db
+      .collection(COLLECTION.GAMES)
+      .find({ type })
+      .toArray();
     return res.status(STATUS_CODE.OK).send(listGames);
   } catch (error) {
     res
