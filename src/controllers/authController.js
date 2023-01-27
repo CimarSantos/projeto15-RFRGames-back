@@ -27,4 +27,26 @@ async function signUp(req, res) {
   }
 }
 
-export { signUp };
+async function login(req, res) {
+  const { user } = res.locals;
+
+  try {
+    const token = uuid();
+
+    await db.collection(COLLECTION.SESSIONS).insertOne({
+      userId: user._id,
+      token,
+    });
+
+    delete user.password;
+    delete user._id;
+
+    return res.status(STATUS_CODE.OK).send({ ...user, token });
+  } catch (err) {
+    return res
+      .status(STATUS_CODE.SERVER_ERROR)
+      .send({ message: "Erro do servidor." });
+  }
+}
+
+export { signUp, login };
