@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { userRouter } from "./routes/userRouter.js";
 import { authRouter } from "./routes/authRouter.js";
-import { cartRouter } from './routes/cartRouter.js';
+import cartRouter from './routes/cartRouter.js';
 
 const server = express();
 server.use(express.json());
