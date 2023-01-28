@@ -18,5 +18,6 @@ export async function cartPostValidation(req, res, next) {
     } catch (error) {
         console.log(error);
         return res.status(STATUS_CODE.SERVER_ERROR).send(error);
-    } s;
+    };
+
 }

@@ -10,7 +10,7 @@ server.use(express.json());
 server.use(cors());
 
 server.use(userRouter);
-server.use(authRouter); 
+server.use(authRouter);
 server.use(cartRouter);
 server.use(saledRouter);
 

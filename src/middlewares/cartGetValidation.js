@@ -14,7 +14,7 @@ export async function cartGetValidation(req, res, next) {
 
         res.locals.user = user;
 
-        next(); 
+        next();
 
     } catch (error) {
         console.log(error);
