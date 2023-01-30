@@ -20,33 +20,60 @@ function validadeSignUp(req, res, next) {
 
 async function thereIsUser(req, res, next) {
   const { user } = res.locals;
-  const userExists = await db
-    .collection(COLLECTION.USERS)
-    .findOne({ email: user.email });
-  if (userExists) {
-    return res
-      .status(STATUS_CODE.CONFLICT)
-      .send({ message: "Usuário já cadastrado." });
+
+  try {
+
+    const userExists = await db
+      .collection(COLLECTION.USERS)
+      .findOne({ email: user.email });
+
+    if (!userExists) return res.status(STATUS_CODE.NOT_FOUND).send('Usuário não encontrado. Email ou senha incorretos.');
+
+    if (userExists) {
+      return res
+        .status(STATUS_CODE.CONFLICT)
+        .send({ message: "Usuário já cadastrado." });
+    }
+    next();
+
+  } catch (error) {
+    console.log(error);
+    return res.status(STATUS_CODE.SERVER_ERROR).send(error);
+
   }
-  next();
 }
 
-function validateLogin(req, res, next) {
+async function validateLogin(req, res, next) {
   const { email, password } = req.body;
-  const { error } = loginSchema.validate(
-    { email, password },
-    { abortEarly: false }
-  );
 
-  if (error) {
-    const message = error.details
-      .map((detail) => detail.message)
-      .join(",")
-      .replace("[ref:password]", "equal to password");
-    return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send({ message });
+  try {
+
+    const { error } = loginSchema.validate(
+      { email, password },
+      { abortEarly: false }
+    );
+
+    if (error) {
+      const message = error.details
+        .map((detail) => detail.message)
+        .join(",")
+        .replace("[ref:password]", "equal to password");
+      return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send({ message });
+    }
+
+    const user = await db.collection(COLLECTION.USERS).findOne({ email }).toArray(); 
+    if (!user) return res.status(STATUS_CODE.NOT_FOUND).send('Usuário não encontrado. Email ou senha incorretos.')
+
+
+    res.locals.user = user;
+    next();
+
+  } catch (error) {
+    console.log(error);
+    return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send(error)
   }
-  res.locals.info = { email, password };
-  next();
+
 }
 
 export { validadeSignUp, validateLogin, thereIsUser };
+
