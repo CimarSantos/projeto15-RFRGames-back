@@ -6,7 +6,6 @@ import { COLLECTION } from "../enums/collections.js";
 
 async function signUp(req, res) {
   const user = req.body;
-  console.log(user);
 
   const passwordHash = bcrypt.hashSync(user.password, 10);
 
@@ -18,44 +17,43 @@ async function signUp(req, res) {
       password: passwordHash,
     });
 
+
     return res
       .status(STATUS_CODE.CREATED)
-      .send({ message: "Cadastro criado com sucesso!" });
+      .send("Cadastro criado com sucesso!");
   } catch (error) {
+    console.log(error)
     return res
       .status(STATUS_CODE.SERVER_ERROR)
-      .send({ message: "Ocorreu um erro no servidor." });
+      .send("Ocorreu um erro no servidor.");
   }
 }
 
 async function login(req, res) {
   const { password } = req.body;
-  const { user } = res.locals;
+  const user = res.locals.user;
+
+  console.log('user do login', user)
+
 
   try {
 
+    await db.collection(COLLECTION.SESSION).deleteMany({ userId: user._id });
+
     if (user && bcrypt.compareSync(password, user.password)) {
 
-      await db.collection(COLLECTION.SESSION).deleteMany({ userId: user._id });
-
       const token = uuid();
-      
+
       await db.collection(COLLECTION.SESSION).insertOne({
         userId: user._id,
         token,
       });
-      
-      delete user.password;
-      delete user._id;
 
-      console.log('error no login authController.js')
-      return res.status(STATUS_CODE.OK).send({ ...user, token });
-    
-    } else {
-      console.log('error no login authController.js')    
-      return res.status(STATUS_CODE.SERVER_ERROR).send('Usuário não encontrado. Email ou senha incorretos.')
-    
-    }
+      console.log('user sendo enviado pro front', user)
+
+      return res.status(STATUS_CODE.OK).send({ ...user , token });
+
+    } 
 
   } catch (err) {
     console.log(err)
