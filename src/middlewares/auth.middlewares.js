@@ -68,7 +68,7 @@ async function validateLogin(req, res, next) {
     if (!user) return res.status(STATUS_CODE.NOT_FOUND).send('Usuário não encontrado. Email ou senha incorretos.')
 
     if (user && bcrypt.compareSync(password, user.password)) {
-      console.log('comparou senhas')
+      console.log(user)
 
       res.locals.user = user;
       next();
