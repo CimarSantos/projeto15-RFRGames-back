@@ -37,6 +37,8 @@ export async function postCart(req, res) {
     const data = req.body;
     const { userId } = res.locals.user;
 
+    console.log(userId);
+
 
     try {
         const Object = { userId, data };
