@@ -48,19 +48,19 @@ async function validateLogin(req, res, next) {
 
   try {
 
-    const { error } = loginSchema.validate(
-      { email, password },
-      { abortEarly: false }
-    );
+    // const { error } = loginSchema.validate(
+    //   { email, password },
+    //   { abortEarly: false }
+    // );
 
-    if (error) {
-      const message = error.details
-        .map((detail) => detail.message)
-        .join(",")
-        .replace("[ref:password]", "equal to password");
-        console.log(error)
-      return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send({ message });
-    }
+    // if (error) {
+    //   const message = error.details
+    //     .map((detail) => detail.message)
+    //     .join(",")
+    //     .replace("[ref:password]", "equal to password");
+    //     console.log(error)
+    //   return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send({ message });
+    // }
 
     const user = await db.collection(COLLECTION.USERS).find({ email }).toArray(); 
     if (!user) return res.status(STATUS_CODE.NOT_FOUND).send('Usuário não encontrado. Email ou senha incorretos.')
