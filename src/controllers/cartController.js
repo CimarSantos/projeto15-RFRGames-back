@@ -35,10 +35,11 @@ export async function deleteCart(req, res) {
 
 export async function postCart(req, res) {
     const data = req.body;
-    const { user } = res.locals.user;
+    const { userId } = res.locals.user;
+
 
     try {
-        const Object = { user, data };
+        const Object = { userId, data };
         await db.collection(COLLECTION.CART).insertOne(Object);
         res.sendStatus(STATUS_CODE.CREATED);
     }
