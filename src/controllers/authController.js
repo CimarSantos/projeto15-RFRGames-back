@@ -33,28 +33,27 @@ async function login(req, res) {
   const { password } = req.body;
   const { user } = res.locals;
 
-  console.log('entrou login')
+  console.log(user)
 
 
   try {
 
     await db.collection(COLLECTION.SESSION).deleteMany({ userId: user._id });
-    console.log('deletou sessions daquele user')
 
     if (user && bcrypt.compareSync(password, user.password)) {
 
       const token = uuid();
-      console.log('criou o token')
 
       await db.collection(COLLECTION.SESSION).insertOne({
         userId: user._id,
         token,
       });
 
-      // delete user.password;
-      // delete user._id;
+      delete user.password;
+      delete user._id;
+      delete user.email;
 
-      return res.status(STATUS_CODE.OK).send({ ...user, token });
+      return res.status(STATUS_CODE.OK).send({ ...user , token });
 
     } 
 
