@@ -44,7 +44,7 @@ async function thereIsUser(req, res, next) {
 }
 
 async function validateLogin(req, res, next) {
-  const { email, password } = req.body;
+  const { email } = req.body;
 
   try {
 
@@ -58,10 +58,11 @@ async function validateLogin(req, res, next) {
         .map((detail) => detail.message)
         .join(",")
         .replace("[ref:password]", "equal to password");
+        console.log(error)
       return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send({ message });
     }
 
-    const user = await db.collection(COLLECTION.USERS).findOne({ email }).toArray(); 
+    const user = await db.collection(COLLECTION.USERS).find({ email }).toArray(); 
     if (!user) return res.status(STATUS_CODE.NOT_FOUND).send('Usuário não encontrado. Email ou senha incorretos.')
 
 

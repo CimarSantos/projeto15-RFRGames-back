@@ -4,6 +4,8 @@ import { userRouter } from "./routes/userRouter.js";
 import { authRouter } from "./routes/authRouter.js";
 import cartRouter from './routes/cartRouter.js';
 import saledRouter from "./routes/saledRouter.js";
+import dotenv from 'dotenv';
+dotenv.config(); 
 
 const server = express();
 server.use(express.json());
