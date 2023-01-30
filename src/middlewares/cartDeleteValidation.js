@@ -12,9 +12,10 @@ export async function cartDeleteValidation(req, res, next) {
         if (!id) return res.sendStatus(STATUS_CODE.NOT_FOUND);
 
         if (!token) return res.sendStatus(STATUS_CODE.UNAUTHORIZED);
-        const user = await db.collection(COLLECTION.SESSION).findOne({ token }).toArray();
+        const user = await db.collection(COLLECTION.SESSION).find({ token }).toArray();
         if (!user) return res.sendStatus(STATUS_CODE.NOT_FOUND);
 
+        console.log(user)
         res.locals.id = id; 
         res.locals.user = user;
 
