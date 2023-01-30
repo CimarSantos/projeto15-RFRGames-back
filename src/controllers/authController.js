@@ -34,10 +34,10 @@ async function login(req, res) {
 
   try {
 
-    await db.collection(COLLECTION.SESSION).deleteMany({ userId: user._id });
-
     if (user && bcrypt.compareSync(password, user.password)) {
-      
+
+      await db.collection(COLLECTION.SESSION).deleteMany({ userId: user._id });
+
       const token = uuid();
       
       await db.collection(COLLECTION.SESSION).insertOne({
@@ -48,10 +48,11 @@ async function login(req, res) {
       delete user.password;
       delete user._id;
 
+      console.log('error no login authController.js')
       return res.status(STATUS_CODE.OK).send({ ...user, token });
     
     } else {
-    
+      console.log('error no login authController.js')    
       return res.status(STATUS_CODE.SERVER_ERROR).send('Usuário não encontrado. Email ou senha incorretos.')
     
     }
