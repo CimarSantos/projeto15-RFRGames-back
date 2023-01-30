@@ -31,9 +31,9 @@ async function signUp(req, res) {
 
 async function login(req, res) {
   const { password } = req.body;
-  const { user } = res.locals;
+  const user = res.locals.user;
 
-  console.log(user)
+  console.log('user do login', user)
 
 
   try {
@@ -49,9 +49,7 @@ async function login(req, res) {
         token,
       });
 
-      delete user.password;
-      delete user._id;
-      delete user.email;
+      console.log('user sendo enviado pro front', user)
 
       return res.status(STATUS_CODE.OK).send({ ...user , token });
 
