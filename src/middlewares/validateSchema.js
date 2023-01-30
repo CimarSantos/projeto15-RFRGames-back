@@ -1,3 +1,4 @@
+import { STATUS_CODE } from "../enums/statusCode.js";
 
 export function validateSchema(schema) {
 
@@ -7,7 +8,7 @@ export function validateSchema(schema) {
 
         if (error) {
             console.log(error);
-            return res.status(422).send(error.details.map(err => err.message));
+            return res.status(STATUS_CODE.UNPROCESSABLE_ENTITY).send(error.details.map(err => err.message));
         }
         next();
     };
