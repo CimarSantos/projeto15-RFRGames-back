@@ -8,7 +8,8 @@ export async function getCart(req, res) {
 
     try {
 
-        const myCart = await db.collection(COLLECTION.CART).findMany({ idUser: ObjectId(user.userId) }).toArray();
+        const myCart = await db.collection(COLLECTION.CART).find({ userId: ObjectId(user.userId) }).toArray();
+        console.log('meu carrinho', myCart)
         if (!myCart) return res.sendStatus(STATUS_CODE.NOT_FOUND);
         return res.status(STATUS_CODE.OK).send(myCart);
 
@@ -36,9 +37,6 @@ export async function deleteCart(req, res) {
 export async function postCart(req, res) {
     const data = req.body;
     const { userId } = res.locals.user;
-
-    console.log(userId);
-
 
     try {
         const Object = { userId, data };

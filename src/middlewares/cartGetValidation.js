@@ -9,7 +9,7 @@ export async function cartGetValidation(req, res, next) {
     try {
 
         if (!token) return res.sendStatus(STATUS_CODE.UNAUTHORIZED);
-        const user = await db.collection(COLLECTION.SESSION).findOne({ token }).toArray();
+        const user = await db.collection(COLLECTION.SESSION).findOne({ token });
         if (!user) return res.sendStatus(STATUS_CODE.NOT_FOUND);
 
         res.locals.user = user;
